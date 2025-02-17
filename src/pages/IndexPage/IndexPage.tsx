@@ -3,6 +3,8 @@ const version = packageJson.version;
 
 import { useState, type FC } from 'react';
 
+import { retrieveLaunchParams } from '@telegram-apps/bridge';
+
 import { Panel } from 'primereact/panel';
 import { Chip } from 'primereact/chip';
 
@@ -11,14 +13,14 @@ import { Link } from '@/components/Link/Link.tsx';
 import './IndexPage.css';
 
 import tonSvg from './ton.svg';
-import { useLaunchParams } from '@telegram-apps/sdk-react';
-
 
 export const IndexPage: FC = () => {
-  const ID = useLaunchParams().initData;
+  const LP = retrieveLaunchParams(true);
+  const tgWebAppData = LP?.tgWebAppData;
+  console.log ("%cretrieveLaunchParams(): %o", 'color: cyan', LP);
+  console.log ("%ctgWebAppData: %o", 'color: cyan', tgWebAppData);
 
-  const [userId] = useState<string>(ID?.user?.id.toString() || '');
-  
+  const [userId] = useState<string>(tgWebAppData?.user?.id.toString() || '');
   return (
     <>
       <div className='app p-0'/>
@@ -40,7 +42,6 @@ export const IndexPage: FC = () => {
                 className='app font-size-subheading'
               >TON Connect</span>
               <div className='flex align-items-center gap-2'>
-                {/*<i className="pi pi-tag text-sm"></i>*/}
                 <span
                   className='app font-size theme-hint-color font-weight-content'
                 >
@@ -48,7 +49,6 @@ export const IndexPage: FC = () => {
                 </span>
               </div>
             </div>
-            {/*<span className="font-bold text-900">$65</span>*/}
           </div>
         </Link>
       </Panel>
@@ -173,18 +173,6 @@ export const IndexPage: FC = () => {
         </div>
 
       {
-      /*
-      <AutoCenter style={{margin: '4px 4px', color: hintColor}}>
-        <Button
-          size='small'
-          style={{backgroundColor: secondaryBgColor, color: hintColor, fontSize: '10px'}}
-          onClick={()=>handleClick()}
-        >UId: {userId}</Button>
-      </AutoCenter>
-      <AutoCenter style={{margin: '4px 4px', color: hintColor}}><span>Калькулятор пошлины</span></AutoCenter>
-      <AutoCenter style={{margin: '4px 4px', color: hintColor}}><span>Версия {version}</span></AutoCenter>
-      <AutoCenter style={{margin: '4px 4px', color: hintColor}}><span>© 2024-2025</span></AutoCenter>
-      */
       }
     </div>
     </>

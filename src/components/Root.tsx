@@ -1,9 +1,9 @@
 const erudaon = false;
 
-import { useLaunchParams } from '@telegram-apps/sdk-react';
+import { type FC, useEffect, useMemo } from 'react';
 import { PrimeReactProvider } from 'primereact/api';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
-import { type FC, useEffect, useMemo } from 'react';
+import { retrieveLaunchParams } from '@telegram-apps/bridge';
 
 import { App } from '@/components/App';
 import { ErrorBoundary } from '@/components/ErrorBoundary.tsx';
@@ -35,11 +35,13 @@ const Inner: FC<InnerProps> = ({ Component, pageProps }) => {
   console.log('Запуск приложения');
   console.log(`Для запуска приложения в режиме отладки запустите бот с параметром: ?startapp=debug\n
     https://t.me/{botusername}/{appname}?startapp=debug`);
-  const launchParams = useLaunchParams();
+
+  const launchParams = retrieveLaunchParams();
   console.log('Параметры запуска:', launchParams);
-  const startParam = launchParams.startParam;
+  const startParam = launchParams.tgWebAppStartParam;
   const debug = startParam === 'debug';
   console.log('Режим отладки:', debug);
+  
   const manifestUrl = useMemo(() => {
     return new URL(import.meta.env.VITE_APP_FOLDER + 'tonconnect-manifest.json', window.location.href).toString();
   }, []);

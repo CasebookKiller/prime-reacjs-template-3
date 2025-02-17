@@ -1,18 +1,6 @@
-import {
-  shareURL,
-  popup,
-  mainButton,
-  backButton,
-//  useLaunchParams,
-  miniApp,
-  themeParams,
-  viewport,
-  init,
-} from '@telegram-apps/sdk-react';
 import { type FC,
   startTransition,
   useEffect,
-//  useMemo
 } from 'react';
 import {
   HashRouter,
@@ -22,6 +10,17 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
+import {
+  shareURL,
+  popup,
+  mainButton,
+  backButton,
+  miniApp,
+  themeParams,
+  viewport,
+  init,
+  retrieveLaunchParams,
+} from '@telegram-apps/sdk-react';
 
 import { routes } from '@/navigation/routes.tsx';
 
@@ -41,9 +40,9 @@ function BackButtonManipulator() {
   useEffect(() => {
     console.log('location.pathname: ', location.pathname);
     if (location.pathname === '/' || location.pathname === '/poshlina-dev/') {
-      backButton.isVisible() && backButton.hide();
+      if (backButton.isSupported() && backButton.isMounted()) !backButton.isVisible() && backButton.hide();
     } else {
-      !backButton.isVisible() && backButton.show();
+      if (backButton.isSupported() && backButton.isMounted()) !backButton.isVisible() && backButton.show();
     }
   }, [location]);
 
@@ -114,17 +113,21 @@ function MainButtonManipulator() {
 
 export const App: FC = () => {
   init();
-  //const lp = useLaunchParams();
-  
-  miniApp.mount();
-  
-  themeParams.mount();
-  if (!themeParams.isCssVarsBound()) themeParams.bindCssVars();
+  const lp = retrieveLaunchParams();
+  console.log('lp', lp);
 
-  viewport.mount();
+  if (!miniApp.isMounted()) miniApp.mount();
 
-  backButton.mount();
-  
+  useEffect(() => {
+    
+    if (!themeParams.isMounted()) themeParams.mount();
+    if (!themeParams.isCssVarsBound()) themeParams.bindCssVars();
+    if (!viewport.isMounted()) viewport.mount();
+    if (!backButton.isMounted()) backButton.mount();
+
+  }, []);
+
+    
   startTransition(() => {
     console.log('%cminiApp: %o', `color: cyan`, miniApp);
   });
