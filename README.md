@@ -5,7 +5,7 @@
 - [React](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [TON Connect](https://docs.ton.org/develop/dapps/ton-connect/overview)
-- [@telegram-apps SDK](https://docs.telegram-mini-apps.com/packages/telegram-apps-sdk)
+- [@telegram-apps SDK вер.3](https://docs.telegram-mini-apps.com/packages/telegram-apps-sdk)
 - [PrimeFlex](https://primeflex.org/)
 - [PrimeReact](https://primereact.org/)
 - [Supabase](https://supabase.com/)
